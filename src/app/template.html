@@ -9,6 +9,9 @@ aria-expanded="false">
 
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
 </button>
 
 </div>
@@ -16,10 +19,25 @@ aria-expanded="false">
 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 <ul class="nav navbar-nav">
 
-<li routerLink="/addstaza" routerLinkActive="active"><a
+<li *ngIf="isAuth == 'yes'" routerLink="/addstaza" routerLinkActive="active"><a
 routerLink="/addstaza">Staza</a></li>
-<li routerLink="/addvozac" routerLinkActive="active"><a
+
+<li *ngIf="isAuth == 'yes'" routerLink="/addvozac" routerLinkActive="active"><a
 routerLink="/addvozac">Vozac</a></li>
+
+<li *ngIf="isAuth == 'yes'" routerLink="/allvozaci" routerLinkActive="active"><a
+routerLink="/allvozaci">Svi vozaci</a></li>
+<li *ngIf="isAuth == 'yes'" routerLink="/allstaze" routerLinkActive="active"><a
+routerLink="/allstaze">Sve staze</a></li>
+
+<li *ngIf="isAuth == 'no'" routerLink="/register"
+routerLinkActive="active"><a routerLink="/register">Register</a></li>
+
+<li *ngIf="isAuth == 'no'" routerLink="/login" routerLinkActive="active"><a
+routerLink="/login">Login</a></li>
+
+<li *ngIf="isAuth == 'yes'" ><a (click)="onLogout()" >Logout</a></li>
+
 </ul>
 </div>
 <!-- /.navbar-collapse -->
