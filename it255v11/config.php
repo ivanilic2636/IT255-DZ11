@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$db = "angular";
+$db = "angular2";
 
 $conn = new mysqli($servername, $username, $password, $db);
 if (!$conn->set_charset("utf8")) {

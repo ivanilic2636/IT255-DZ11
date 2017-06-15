@@ -1,0 +1,12 @@
+<form role="form" [formGroup]="editVozacForm">
+<div class="form-group">
+  <label for="ime">Ime:</label>
+  <input type="text" class="form-control" formControlName='ime'>
+</div>
+<div class="form-group">
+  <label for="prezime">Prezime:</label>
+  <input type="text" class="form-control" formControlName='prezime'>
+</div>
+
+<button (click)="onEditVozac()" class="btn btn-default">Edit vozac</button>
+</form>

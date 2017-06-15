@@ -1,11 +1,33 @@
 <div class="col-lg-12">
 <br/>Vozaci<br/> <br/>
-<div *ngFor="let vozac of data">
-Ime vozaca: {{vozac.ime}}
-<br/>
-Prezime vozaca: {{vozac.prezime}}
-<br/>
-Bolid vozaca: {{vozac.bolid}}
-<br/>
-</div>
+<table class="table-stripped table">
+<thead>
+<tr>
+<th>Ime vozaca</th>
+<th>Prezime</th>
+
+<th>Bolid</th>
+<th>Delete</th>
+<th>View</th>
+<th>Edit</th>
+</tr>
+</thead>
+<tbody>
+<tr *ngFor="let vozac of data">
+<td>{{vozac.ime}}</td>
+<td>{{vozac.prezime}}</td>
+<td>{{vozac.bolid}}</td>
+
+<td>
+<button class="btn btn-danger" (click)="removeVozac($event,vozac.id)">Delete</button>
+</td>
+<td>
+<button class="btn btn-default" (click)="viewVozac(vozac.id)">View</button>
+</td>
+<td>
+        <button class="btn btn-warning" (click)="editVozac(vozac.id)">Edit</button>
+      </td>
+</tr>
+</tbody>
+</table>
 </div>

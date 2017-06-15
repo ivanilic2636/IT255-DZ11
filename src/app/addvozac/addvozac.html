@@ -7,9 +7,14 @@
 <label for="prezime">Prezime vozaca:</label>
 <input type="text" class="form-control" formControlName='prezime'>
 </div>
+
 <div class="form-group">
 <label for="bolid">Bolid:</label>
-<input type="text" class="form-control" formControlName='bolid'>
+<select formControlName='bolid' class="form-control" ng-selected="Yes" >
+<option value="" selected>Select bolid</option>
+<option *ngFor="let bolid1 of bolid" [value]="bolid1.id_bolida">{{bolid1.ime_bolida}}</option>
+</select>
+
 </div>
 
 <button (click)="onAddVozac()" class="btn btn-default">Dodaj vozaca</button>

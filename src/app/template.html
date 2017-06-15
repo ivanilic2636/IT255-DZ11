@@ -20,15 +20,20 @@ aria-expanded="false">
 <ul class="nav navbar-nav">
 
 <li *ngIf="isAuth == 'yes'" routerLink="/addstaza" routerLinkActive="active"><a
-routerLink="/addstaza">Staza</a></li>
+routerLink="/addstaza">Dodaj stazu</a></li>
 
 <li *ngIf="isAuth == 'yes'" routerLink="/addvozac" routerLinkActive="active"><a
-routerLink="/addvozac">Vozac</a></li>
+routerLink="/addvozac">Dodaj vozaca</a></li>
 
 <li *ngIf="isAuth == 'yes'" routerLink="/allvozaci" routerLinkActive="active"><a
 routerLink="/allvozaci">Svi vozaci</a></li>
 <li *ngIf="isAuth == 'yes'" routerLink="/allstaze" routerLinkActive="active"><a
 routerLink="/allstaze">Sve staze</a></li>
+
+<li *ngIf="isAuth == 'yes'" routerLink="/addbolid"
+routerLinkActive="active"><a routerLink="/addbolid">Add bolid</a></li>
+<li *ngIf="isAuth == 'yes'" routerLink="/allbolid"
+routerLinkActive="active"><a routerLink="/allbolid">Svi bolidi</a></li>
 
 <li *ngIf="isAuth == 'no'" routerLink="/register"
 routerLinkActive="active"><a routerLink="/register">Register</a></li>

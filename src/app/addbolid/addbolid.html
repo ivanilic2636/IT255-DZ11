@@ -1,0 +1,7 @@
+<form role="form" [formGroup]="addBolidTypeForm">
+<div class="form-group">
+<label for="name">Ime bolida:</label>
+<input type="text" class="form-control" formControlName='ime_bolida'>
+</div>
+<button (click)="onAddBolid()" class="btn btn-default">Dodaj bolid</button>
+</form>

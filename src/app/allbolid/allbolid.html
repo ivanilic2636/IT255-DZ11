@@ -1,0 +1,19 @@
+<div class="col-lg-12">
+<br/>Bolid<br/> <br/>
+<table class="table-stripped table">
+<thead>
+<tr>
+<th>Ime Bolida</th>
+<th>Delete</th>
+</tr>
+</thead>
+<tbody>
+<tr *ngFor="let bolid of data">
+<td>{{bolid.ime_bolida}}</td>
+<td>
+<button class="btn btn-danger" (click)="removeBolid($event,bolid.id_bolida)">Delete</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>

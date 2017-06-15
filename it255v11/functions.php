@@ -147,12 +147,12 @@ return false;
 
 
 
-function addVozac($ime, $prezime, $bolid){
+function addVozac($ime, $prezime, $id_b){
 global $conn;
 $rarray = array();
 if(checkIfLoggedIn()){
-$stmt = $conn->prepare("INSERT INTO vozac (ime, prezime, bolid) VALUES (?, ?, ?)");
-$stmt->bind_param("sss", $ime, $prezime, $bolid);
+$stmt = $conn->prepare("INSERT INTO vozac (ime, prezime, id_b) VALUES (?, ?, ?)");
+$stmt->bind_param("ssi", $ime, $prezime, $id_b);
 if($stmt->execute()){
 $rarray['success'] = "ok";
 }else{
@@ -164,6 +164,184 @@ header('HTTP/1.1 401 Unauthorized');
 }
 return json_encode($rarray);
 }
+
+
+function getVozaci(){
+	global $conn;
+$rarray = array();
+if(checkIfLoggedIn()){
+$result = $conn->query("SELECT vozac.id, ime, prezime, (SELECT ime_bolida FROM bolid WHERE id_bolida = vozac.id_b) as bolid FROM vozac");
+
+$num_rows = $result->num_rows;
+
+$vozaci = array();
+if($num_rows > 0)
+{
+$result2 = $conn->query("SELECT vozac.id, ime, prezime, (SELECT ime_bolida FROM bolid WHERE id_bolida = vozac.id_b) as bolid FROM vozac");
+while($row = $result2->fetch_assoc()) {
+$jedan_vozac = array();
+$jedan_vozac['id'] = $row['id'];
+$jedan_vozac['ime'] = $row['ime'];
+$jedan_vozac['prezime'] = $row['prezime'];
+$jedan_vozac['bolid'] = $row['bolid'];
+array_push($vozaci,$jedan_vozac);
+}
+}
+$rarray['vozaci'] = $vozaci;
+return json_encode($rarray);
+} else{
+$rarray['error'] = "Please log in";
+header('HTTP/1.1 401 Unauthorized');
+return json_encode($rarray);
+}
+}
+
+
+
+
+
+function editVozac($id,$ime,$prezime){
+    global $conn;
+    $rarray = array();
+    if(checkIfLoggedIn()){
+        $stmt = $conn->prepare("UPDATE vozac SET ime=?, prezime=? WHERE id=?");
+        $stmt->bind_param("ssi", $ime, $prezime, $id);
+        if($stmt->execute()){
+            $rarray['success'] = "ok";
+        }else{
+            $rarray['error'] = "Database connection error";
+        }
+    } else{
+        $rarray['error'] = "Please log in";
+        header('HTTP/1.1 401 Unauthorized');
+    }
+    return json_encode($rarray);
+}
+
+
+
+
+
+
+
+
+
+function getVozac($id){
+global $conn;
+$rarray = array();
+if(checkIfLoggedIn()){
+$result = $conn->query("SELECT * FROM vozac WHERE id=".$id);
+$num_rows = $result->num_rows;
+$vozaci = array();
+if($num_rows > 0)
+{
+$result2 = $conn->query("SELECT * FROM vozac WHERE id=".$id);
+while($row = $result2->fetch_assoc()) {
+$jedan_vozac = array();
+$jedan_vozac['id'] = $row['id'];
+$jedan_vozac['ime'] = $row['ime'];
+$jedan_vozac['prezime'] = $row['prezime'];
+
+$vozaci = $jedan_vozac;
+}
+}
+$rarray['data'] = $vozaci;
+return json_encode($rarray);
+} else{
+$rarray['error'] = "Please log in";
+header('HTTP/1.1 401 Unauthorized');
+return json_encode($rarray);
+}
+}
+
+
+
+function deleteVozac($id){
+global $conn;
+$rarray = array();
+if(checkIfLoggedIn()){
+$result = $conn->prepare("DELETE FROM vozac WHERE id=?");
+$result->bind_param("i",$id);
+$result->execute();
+$rarray['success'] = "Deleted successfully";
+} else{
+$rarray['error'] = "Please log in";
+header('HTTP/1.1 401 Unauthorized');
+}
+return json_encode($rarray);
+}
+
+
+function addBolid($ime_bolida){
+	global $conn;
+	$rarray = array();
+	if(checkIfLoggedIn()){
+		$stmt = $conn->prepare("INSERT INTO bolid (ime_bolida) VALUES(?)");
+		$stmt->bind_param("s",$ime_bolida);
+		if($stmt->execute()){
+			$rarray['success'] = "ok";
+			
+		}else{
+			$rarray['error'] = "Database connection error";
+		}
+	}else{
+			$rarray['error'] = "Please log in";
+			header('HTTP/1.1 401 Unauthorized');
+		}
+		return json_encode($rarray);
+		
+	}
+
+function getBolid(){
+global $conn;
+$rarray = array();
+if(checkIfLoggedIn()){
+$result = $conn->query("SELECT * FROM bolid");
+$num_rows = $result->num_rows;
+$bolid = array();
+if($num_rows > 0)
+{
+$result2 = $conn->query("SELECT * FROM bolid");
+while($row = $result2->fetch_assoc()) {
+$jedan_bolid = array();
+$jedan_bolid['id_bolida'] = $row['id_bolida'];
+$jedan_bolid['ime_bolida'] = $row['ime_bolida'];
+array_push($bolid,$jedan_bolid);
+}
+}
+$rarray['bolid'] = $bolid;
+return json_encode($rarray);
+} else{
+$rarray['error'] = "Please log in";
+header('HTTP/1.1 401 Unauthorized');
+return json_encode($rarray);
+}
+}
+
+
+
+
+
+function deleteStaza($id){
+global $conn;
+$rarray = array();
+if(checkIfLoggedIn()){
+$result = $conn->prepare("DELETE FROM staza WHERE id=?");
+$result->bind_param("i",$id);
+$result->execute();
+$rarray['success'] = "Deleted successfully";
+} else{
+$rarray['error'] = "Please log in";
+header('HTTP/1.1 401 Unauthorized');
+}
+return json_encode($rarray);
+}
+
+
+
+
+
+
 
 
 
@@ -188,33 +366,6 @@ return json_encode($rarray);
 
 
 
-function getVozaci(){
-global $conn;
-$rarray = array();
-if(checkIfLoggedIn()){
-$result = $conn->query("SELECT * FROM vozac");
-$num_rows = $result->num_rows;
-$vozaci = array();
-if($num_rows > 0)
-{
-$result2 = $conn->query("SELECT * FROM vozac");
-while($row = $result2->fetch_assoc()) {
-$jedan_vozac = array();
-$jedan_vozac['id'] = $row['id'];
-$jedan_vozac['ime'] = $row['ime'];
-$jedan_vozac['prezime'] = $row['prezime'];
-$jedan_vozac['bolid'] = $row['bolid'];
-array_push($vozaci,$jedan_vozac);
-}
-}
-$rarray['vozaci'] = $vozaci;
-return json_encode($rarray);
-} else{
-$rarray['error'] = "Please log in";
-header('HTTP/1.1 401 Unauthorized');
-return json_encode($rarray);
-}
-}
 
 
 
@@ -245,6 +396,28 @@ header('HTTP/1.1 401 Unauthorized');
 return json_encode($rarray);
 }
 }
+
+
+
+
+function deleteBolid($id_bolida){
+global $conn;
+$rarray = array();
+if(checkIfLoggedIn()){
+$result = $conn->prepare("DELETE FROM bolid WHERE id_bolida=?");
+$result->bind_param("i",$id_bolida);
+$result->execute();
+$rarray['success'] = "Deleted successfully";
+} else{
+$rarray['error'] = "Please log in";
+header('HTTP/1.1 401 Unauthorized');
+}
+return json_encode($rarray);
+}
+
+
+
+
 
 
 
